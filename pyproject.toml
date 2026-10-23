@@ -1,0 +1,8 @@
+[tool.pytest-watcher]
+now = true
+clear = true
+notify_on_failure = true
+runner = "pytest"
+patterns = ["*.py"]
+[tool.pytest.ini_options]
+testpaths = ["C:\\Users\\User\\Documents\\AI\\Scientist AI\\gflownet_hub\\tests"]
