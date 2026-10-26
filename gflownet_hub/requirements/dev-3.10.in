@@ -1,0 +1,12 @@
+-r main-3.10.in
+bandit[toml]
+black
+isort
+mypy
+pip-compile-multi
+pre-commit
+pytest
+pytest-cov
+ruff
+tox
+gitpython>=3.1.30

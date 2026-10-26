@@ -1,0 +1,32 @@
+name: Build-and-Test
+on:
+  push:
+    branches:
+    - trunk
+  pull_request:
+jobs:
+  tests:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: Linux, python: '3.10', os: ubuntu-latest, tox: py310}
+          - {name: Windows, python: '3.10', os: windows-latest, tox: py310}
+          # Some packages fail on M1 (macos-latest) due to not having wheels and not being able to build from source
+          - {name: Mac, python: '3.10', os: macos-13, tox: py310}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements/*.txt'
+      - name: update pip
+        run: |
+          pip install -U wheel
+          pip install -U setuptools
+          python -m pip install -U pip
+      - run: pip install tox
+      - run: tox -e ${{ matrix.tox }}

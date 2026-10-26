@@ -1,0 +1,66 @@
+# @package _global_
+# A configuration that works well with the corners proxy.
+# wandb: https://wandb.ai/alexhg/cube/runs/9u2d3zzh
+
+defaults:
+  - override /env: scrabble
+  - override /gflownet: trajectorybalance
+  - override /loss: trajectorybalance
+  - override /proxy: scrabble
+  - override /logger: wandb
+
+# Buffer
+buffer:
+  test:
+    type: random
+    n: 1000
+
+# Proxy
+proxy:
+  vocabulary_check: True
+
+# GFlowNet hyperparameters
+gflownet:
+  random_action_prob: 0.2
+  optimizer:
+    batch_size:
+      forward: 100
+    lr: 0.001
+    z_dim: 16
+    lr_z_mult: 100
+    n_train_steps: 10000
+
+# Policy
+policy:
+  forward:
+    type: mlp
+    n_hid: 1024
+    n_layers: 4
+    checkpoint: forward
+  backward:
+    type: mlp
+    n_hid: 1024
+    n_layers: 3
+    shared_weights: False
+    checkpoint: backward
+
+# WandB
+logger:
+  do:
+    online: true
+  lightweight: True
+  project_name: "scrabble"
+  tags: 
+    - gflownet
+    - discrete
+    - scrabble
+  test:
+    period: 500
+    n: 1000
+  checkpoints:
+    period: 500
+
+# Hydra
+hydra:
+  run:
+    dir: ${user.logdir.root}/ccube/${now:%Y-%m-%d_%H-%M-%S}

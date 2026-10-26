@@ -1,0 +1,6 @@
+scientist_ai.venv/
+*.venv/
+gflownet-env/
+.env
+.vscode/
+__pycache__/
